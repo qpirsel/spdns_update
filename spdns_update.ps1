@@ -9,10 +9,10 @@ $user = ""
 $myLogFile = "C:\scripts\spdns_update.log"
 $logging = $false
 
+# no necessity to edit below this line
 $registeredIP = ""
 $currentIP = ""
 
-# no necessity to edit below this line
 $myServiceList = "http://api.ipify.org","http://ipecho.net/plain","http://checkip4.spdns.de"
 
 function log {
