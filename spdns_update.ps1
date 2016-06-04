@@ -22,7 +22,7 @@ function log {
     )
 
     if ($logging) {
-        (Get-Date -Format yyyyMMddhhmmss).ToString() + " " + `
+        (Get-Date -Format yyyyMMddHHmmss).ToString() + " " + `
             $piped | Out-File -FilePath $myLogFile -Append
         }
     # console output
