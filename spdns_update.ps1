@@ -56,7 +56,7 @@ if ($registeredIP -like $currentIP) {
 } else {
     $secpasswd = ConvertTo-SecureString $pwd -AsPlainText -Force
     $myCreds = New-Object System.Management.Automation.PSCredential ($user, $secpasswd)
-    $url = "https://update.spdns.de/nic/update?hostname=$fqdn&myip=$currentIP"
+    $url = "https://update.spdyn.de/nic/update?hostname=$fqdn&myip=$currentIP"
 
     try {
         $resp = Invoke-WebRequest -Uri $url -Credential $myCreds -UseBasicParsing
