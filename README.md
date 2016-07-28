@@ -1,5 +1,5 @@
 ### What is it for?
-This script is intended to be used for the Securepoint Dynamic DNS Service (https://www.spdns.de/).
+This script is intended to be used for the Securepoint Dynamic DNS Service (https://www.spdyn.de/).
 
 ### Something special with this script?
 The script tries to contact the service only if necessary to avoid a ban due a high request count. But because of it's router independent pre check function you can execute it every 5 minutes with the Windows Task Scheduler without any risks.
