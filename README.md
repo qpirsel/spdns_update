@@ -26,5 +26,5 @@ Ensure proper write permissions in the given folder structure. The log file itse
 Q: I get a _...execution of scripts is disabled on this system._ error when executing the script. What can I do?  
 A: Open PowerShell as administrator paste **set-executionpolicy remotesigned** and confirm it.  
   
-Q: Does the script work with tokens? 
+Q: Does the script work with tokens?    
 A: Yes. An token is nothing else but an password that only works with the desired FQDN. Note: When you generate a token $user MUST be equal to your FQDN!
