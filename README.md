@@ -27,4 +27,4 @@ Q: I get a _...execution of scripts is disabled on this system._ error when exec
 A: Open PowerShell as administrator paste **set-executionpolicy remotesigned** and confirm it.  
   
 Q: Does the script work with tokens?    
-A: Yes. An token is nothing else but an password that only works with the desired FQDN. Note: When you generate a token $user MUST be equal to your FQDN!
+A: Yes. A token is nothing else but an password that only works with the desired FQDN. Note: When you generate a token $user MUST be equal to your FQDN!
