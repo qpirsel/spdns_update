@@ -46,9 +46,6 @@ try {
     exit 1
 }
 
-$registeredIP
-$currentIP
-
 if ($registeredIP[0].IPAddress -like $currentIP) {
     "Precheck " + "IP $currentIP already registered." | log
     exit 0
