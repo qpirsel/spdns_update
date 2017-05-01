@@ -1,3 +1,5 @@
+#requires -version 4
+
 Clear-Host
 
 # adjust your values
