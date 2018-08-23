@@ -3,13 +3,14 @@
 Clear-Host
 
 # adjust your values
-$fqdn = ""
-$pwd = ""
-$user = ""
+$fqdn = "dr-borho-ka.firewall-gateway.de"
+$pwd = "mqox-groz-gaxc"
+$user = "dr-borho-ka.firewall-gateway.de"
+$dnsserver = "8.8.8.8"
 
 # (optional) set full path to (writable) logfile and switch logging on ($true) or off ($false)
-$myLogFile = "C:\scripts\spdns_update.log"
-$logging = $false
+$myLogFile = "C:\Batches\SpDyn\spdns_update.log"
+$logging = $true
 
 # no necessity to edit below this line
 $myServiceList = "http://ipecho.net/plain","http://checkip4.spdns.de"
@@ -41,8 +42,14 @@ function checkIP ($myServiceAddress) {
 
 $currentIP = checkIP (Get-Random -InputObject $myServiceList)
 
+
+
 try {
-    $registeredIP = Resolve-DnsName $fqdn -Type A -ErrorAction Stop
+if ($dnsserver -ne "") {
+    $registeredIP = Resolve-DnsName $fqdn -Type A -ErrorAction Stop -Server $dnsserver }
+    else{
+    $registeredIP = Resolve-DnsName $fqdn -Type A -ErrorAction Stop}
+
 } catch {
     "Resolve DNS Name " + $_.Exception.Message | log
     exit 1
