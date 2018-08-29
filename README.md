@@ -17,6 +17,7 @@ Due to the extended security restrictions of PowerShell scripts the easiest way 
 **$fqdn** Your fully qualified domain name, e.g. home.spdns.de  
 **$user** Your username at spdns.de  
 **$pwd** Your password at spdns.de  
+**$dnsserver** Specify an external DNS Server to avoid DNS caching
 
 ### Logging (optional)
 This script has an optional logging function for simple debugging purposes. Change **$logging = $true** to enable it.  
