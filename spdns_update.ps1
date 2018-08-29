@@ -6,6 +6,8 @@ Clear-Host
 $fqdn = ""
 $pwd = ""
 $user = ""
+$dnsserver = ""
+
 
 # (optional) set full path to (writable) logfile and switch logging on ($true) or off ($false)
 $myLogFile = "C:\scripts\spdns_update.log"
@@ -42,11 +44,12 @@ function checkIP ($myServiceAddress) {
 $currentIP = checkIP (Get-Random -InputObject $myServiceList)
 
 try {
-    $registeredIP = Resolve-DnsName $fqdn -Type A -ErrorAction Stop
-} catch {
-    "Resolve DNS Name " + $_.Exception.Message | log
-    exit 1
+if ($dnsserver -ne "") {
+    $registeredIP = Resolve-DnsName $fqdn -Type A -ErrorAction Stop -Server $dnsserver }
+    else{
+     $registeredIP = Resolve-DnsName $fqdn -Type A -ErrorAction Stop}
 }
+
 
 if ($registeredIP[0].IPAddress -like $currentIP) {
     "Precheck " + "IP $currentIP already registered." | log
