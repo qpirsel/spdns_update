@@ -2,7 +2,7 @@
 
 Clear-Host
 
-# adjust your values
+# (mandatory) adjust your values
 $fqdn = ""
 $pwd = ""
 $user = ""
@@ -11,9 +11,13 @@ $user = ""
 $myLogFile = "C:\scripts\spdns_update.log"
 $logging = $false
 
-# no necessity to edit below this line
-$myServiceList = "http://ipecho.net/plain","http://checkip4.spdns.de"
+# (optional) add or remove service sites. NOTE: A service sites MUST return a plain IP string WITHOUT any HTML tags!
+$myServiceList = "http://ipecho.net/plain"`
+                ,"http://checkip4.spdns.de"`
+                ,"http://ident.me"`
+                ,"http://plain-text-ip.com"
 
+### no necessity to edit below this line ###
 function log {
     param(
         [Parameter(ValueFromPipeline=$true)]
@@ -31,24 +35,44 @@ function log {
 function checkIP ($myServiceAddress) {
 
     try {
-        $myIP = Invoke-WebRequest -Uri $myServiceAddress -UseBasicParsing -ErrorAction Stop
+        $myIP = Invoke-WebRequest -Uri $myServiceAddress -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop
+
+        if ( -not ($myIP) -or -not ($myIP -match '^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$')) {
+            "checkIP " + "No valid response" | log
+            exit 1
+        }
+
     } catch {
         "checkIP " + $_.Exception.Message | log
         exit 1
     }
+
     Return "$myIP"
 }
 
-$currentIP = checkIP (Get-Random -InputObject $myServiceList)
+$usedService = Get-Random -InputObject $myServiceList
+"checkIP " + "Determine current IP at " + $usedService | log
+$currentIP = checkIP $usedService
 
 try {
-    $registeredIP = Resolve-DnsName $fqdn -Type A -ErrorAction Stop
+   if (([System.Environment]::OSVersion.Version.Major -eq 6) -and ([System.Environment]::OSVersion.Version.Minor -eq 1)) {
+    "Resolve DNS Name " + "Using System.Net.Dns" | log
+        # workaround for Windows 7/2008R2
+        $ipHostEntry = [System.Net.Dns]::GetHostByName($fqdn)
+        $registeredIP = ($ipHostEntry.AddressList).IPAddressToString 
+    } else {
+    "Resolve DNS Name " + "Using native Commandlet" | log
+        $ipHostEntry = Resolve-DnsName $fqdn -Type A -ErrorAction Stop
+        $registeredIP = $ipHostEntry[0].IPAddress
+    }
+
 } catch {
     "Resolve DNS Name " + $_.Exception.Message | log
     exit 1
 }
 
-if ($registeredIP[0].IPAddress -like $currentIP) {
+
+if ($registeredIP -like $currentIP) {
     "Precheck " + "IP $currentIP already registered." | log
     exit 0
 } else {
